@@ -1,0 +1,82 @@
+53. Maximum Subarray
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int currentSum = nums[0];  
+        int maxSum = nums[0];      
+        for (int i = 1; i < nums.size(); ++i) {
+          
+            currentSum = max(nums[i], currentSum + nums[i]);
+          
+            maxSum = max(maxSum, currentSum);
+        }
+        
+        return maxSum;  
+    }
+};
+
+240. Search a 2D matrix ||
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size();    // Number of rows
+        int n = matrix[0].size(); // Number of columns
+        int row = 0;  // Start at the top-right corner of the matrix
+        int col = n - 1;
+        
+        while (row < m && col >= 0) {
+            if (matrix[row][col] == target) {
+                return true;  // Found the target
+            }
+            else if (matrix[row][col] > target) {
+                col--;  // Move left to find smaller values
+            }
+            else {
+                row++;  // Move down to find larger values
+            }
+        }
+        
+        return false;  // Target not found
+    }
+};
+
+
+372. Super pow
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int mod = 1337;
+
+    int myPow(int a, long long b) {
+        a %= mod;  // Since a^b mod 1337 is the same as (a % 1337)^b mod 1337
+        int res = 1;
+        while (b > 0) {
+            if (b % 2 == 1) {
+                res = (res * a) % mod;
+            }
+            a = (a * a) % mod;
+            b /= 2;
+        }
+        return res;
+    }
+    
+    int superPow(int a, vector<int>& b) {
+        // Step 1: Calculate the value of b mod (mod-1), since we are working with mod 1337, we use mod-1 for exponent reduction
+        long long exp = 0;
+        for (int digit : b) {
+            exp = (exp * 10 + digit) % (mod - 1);
+        }
+        
+        // Step 2: Use myPow to calculate a^exp mod 1337
+        return myPow(a, exp);
+    }
+};
